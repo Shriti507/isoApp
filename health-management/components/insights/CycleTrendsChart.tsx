@@ -1,7 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { BarChart } from "react-native-chart-kit";
-import { chartConfig } from "../../constants/chartConfig";
+import { mintChartConfig } from "../../constants/chartConfig";
+import { HealthPalette } from "../../constants/theme";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -27,9 +28,8 @@ const CycleTrendsChart = () => {
         yAxisLabel=""
         yAxisSuffix="d"
         chartConfig={{
-          ...chartConfig,
-          color: (opacity = 1) => `rgba(99, 102, 241, ${opacity})`,
-          fillShadowGradient: "#6366f1",
+          ...mintChartConfig,
+          fillShadowGradient: HealthPalette.mint,
           fillShadowGradientOpacity: 1,
         }}
         verticalLabelRotation={0}

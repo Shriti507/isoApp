@@ -1,10 +1,16 @@
 import React from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { HealthPalette } from "../../constants/theme";
 
 const { width } = Dimensions.get("window");
 const SQUARE_SIZE = (width - 120) / 7;
 
-const categories = ["Sleep", "Hydration", "Caffeine", "Exercise"];
+const categories = [
+  { name: "Sleep", color: HealthPalette.indigo },
+  { name: "Hydration", color: HealthPalette.mint },
+  { name: "Caffeine", color: HealthPalette.yellow },
+  { name: "Exercise", color: HealthPalette.coral },
+];
 const days = ["M", "T", "W", "T", "F", "S", "S"];
 
 // Mock data: 4 categories x 7 days
@@ -29,8 +35,8 @@ const LifestyleHeatmap = () => {
           ))}
         </View>
         {categories.map((category, rowIndex) => (
-          <View key={category} style={styles.row}>
-            <Text style={styles.categoryLabel}>{category}</Text>
+          <View key={category.name} style={styles.row}>
+            <Text style={styles.categoryLabel}>{category.name}</Text>
             <View style={styles.squaresRow}>
               {data[rowIndex].map((val, colIndex) => (
                 <View
@@ -38,7 +44,7 @@ const LifestyleHeatmap = () => {
                   style={[
                     styles.square,
                     {
-                      backgroundColor: "#6366f1",
+                      backgroundColor: category.color,
                       opacity: val,
                     },
                   ]}
@@ -132,7 +138,7 @@ const styles = StyleSheet.create({
   legendSquare: {
     width: 12,
     height: 12,
-    backgroundColor: "#6366f1",
+    backgroundColor: "#9ca3af",
     borderRadius: 2,
     marginHorizontal: 2,
   },

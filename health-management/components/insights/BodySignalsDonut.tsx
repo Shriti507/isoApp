@@ -2,6 +2,8 @@ import React from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import Svg, { G, Circle, Text as SvgText } from "react-native-svg";
 
+import { HealthPalette } from "../../constants/theme";
+
 const { width } = Dimensions.get("window");
 const SIZE = 200;
 const STROKE_WIDTH = 25;
@@ -9,10 +11,10 @@ const RADIUS = (SIZE - STROKE_WIDTH) / 2;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
 const data = [
-  { label: "Mood", value: 30, color: "#6366f1" },
-  { label: "Bloating", value: 31, color: "#818cf8" },
-  { label: "Fatigue", value: 21, color: "#a5b4fc" },
-  { label: "Acne", value: 17, color: "#c7d2fe" },
+  { label: "Mood", value: 30, color: HealthPalette.lavender },
+  { label: "Bloating", value: 31, color: HealthPalette.coral },
+  { label: "Fatigue", value: 21, color: HealthPalette.yellow },
+  { label: "Acne", value: 17, color: HealthPalette.mint },
 ];
 
 const BodySignalsDonut = () => {

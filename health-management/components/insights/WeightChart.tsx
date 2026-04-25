@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 import { LineChart } from "react-native-chart-kit";
-import { redChartConfig } from "../../constants/chartConfig";
+import { coralChartConfig } from "../../constants/chartConfig";
+import { HealthPalette } from "../../constants/theme";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -52,7 +53,7 @@ const WeightChart = () => {
           datasets: [
             {
               data: [65.8, 65.2, 65.5, 64.8, 64.5],
-              color: (opacity = 1) => `rgba(248, 113, 113, ${opacity})`, // red
+              color: (opacity = 1) => `rgba(255, 138, 113, ${opacity})`, // coral
               strokeWidth: 3,
             },
           ],
@@ -60,8 +61,8 @@ const WeightChart = () => {
         width={screenWidth - 64}
         height={180}
         chartConfig={{
-          ...redChartConfig,
-          fillShadowGradient: "#f87171",
+          ...coralChartConfig,
+          fillShadowGradient: HealthPalette.coral,
           fillShadowGradientOpacity: 0.1,
         }}
         bezier

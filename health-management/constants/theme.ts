@@ -27,6 +27,14 @@ export const Colors = {
   },
 };
 
+export const HealthPalette = {
+  indigo: '#6366F1',
+  coral: '#FF8A71',
+  mint: '#4ADE80',
+  lavender: '#C084FC',
+  yellow: '#FBBF24',
+};
+
 export const Fonts = Platform.select({
   ios: {
     /** iOS `UIFontDescriptorSystemDesignDefault` */

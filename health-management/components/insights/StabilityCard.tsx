@@ -1,7 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { LineChart } from "react-native-chart-kit";
-import { chartConfig } from "../../constants/chartConfig";
+import { lavenderChartConfig } from "../../constants/chartConfig";
+import { HealthPalette } from "../../constants/theme";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -24,7 +25,7 @@ const StabilityCard = () => {
           datasets: [
             {
               data: [65, 70, 68, 72, 75, 74, 78],
-              color: (opacity = 1) => `rgba(99, 102, 241, ${opacity})`, 
+              color: (opacity = 1) => `rgba(192, 132, 252, ${opacity})`, // lavender
               strokeWidth: 3,
             },
           ],
@@ -32,8 +33,8 @@ const StabilityCard = () => {
         width={screenWidth - 64} 
         height={180}
         chartConfig={{
-          ...chartConfig,
-          fillShadowGradient: "#6366f1",
+          ...lavenderChartConfig,
+          fillShadowGradient: HealthPalette.lavender,
           fillShadowGradientOpacity: 0.2,
         }}
         bezier
@@ -79,14 +80,14 @@ const styles = StyleSheet.create({
     color: "#1f2937",
   },
   tooltip: {
-    backgroundColor: "#e0e7ff",
+    backgroundColor: "#f3e8ff",
     paddingVertical: 6,
     paddingHorizontal: 12,
     borderRadius: 20,
   },
   tooltipText: {
     fontSize: 12,
-    color: "#4338ca",
+    color: "#9333ea",
     fontWeight: "600",
   },
   chart: {

@@ -1,51 +1,42 @@
-import { HealthPalette } from "./theme";
+import { Colors } from "./colors";
 
-export const chartConfig = {
-  backgroundGradientFrom: "#ffffff",
-  backgroundGradientTo: "#ffffff",
+export const baseChartConfig = {
+  backgroundGradientFrom: Colors.white,
+  backgroundGradientTo: Colors.white,
   decimalPlaces: 0,
-  color: (opacity = 1) => `rgba(99, 102, 241, ${opacity})`, 
-  labelColor: (opacity = 1) => `rgba(107, 114, 128, ${opacity})`,
+  color: (opacity = 1) => `rgba(124, 131, 253, ${opacity})`, // Indigo default
+  labelColor: (opacity = 1) => `rgba(100, 116, 139, ${opacity})`, // textSecondary
   strokeWidth: 2,
   barPercentage: 0.6,
   useShadowColorFromDataset: false,
   propsForDots: {
     r: "4",
     strokeWidth: "2",
-    stroke: HealthPalette.indigo,
+    stroke: Colors.indigo,
   },
   propsForBackgroundLines: {
     strokeDasharray: "", 
-    stroke: "#f3f4f6",
+    stroke: Colors.graySoft,
   },
 };
 
-export const indigoChartConfig = {
-  ...chartConfig,
-  color: (opacity = 1) => `rgba(99, 102, 241, ${opacity})`,
-  propsForDots: { ...chartConfig.propsForDots, stroke: HealthPalette.indigo },
-};
+export const getChartConfig = (primaryColor: string) => ({
+  ...baseChartConfig,
+  color: (opacity = 1) => {
+    // If it's a hex color, we need to convert or just use it
+    // react-native-chart-kit often expects a function
+    return hexToRgba(primaryColor, opacity);
+  },
+  propsForDots: {
+    ...baseChartConfig.propsForDots,
+    stroke: primaryColor,
+  },
+});
 
-export const coralChartConfig = {
-  ...chartConfig,
-  color: (opacity = 1) => `rgba(255, 138, 113, ${opacity})`,
-  propsForDots: { ...chartConfig.propsForDots, stroke: HealthPalette.coral },
-};
-
-export const mintChartConfig = {
-  ...chartConfig,
-  color: (opacity = 1) => `rgba(74, 222, 128, ${opacity})`,
-  propsForDots: { ...chartConfig.propsForDots, stroke: HealthPalette.mint },
-};
-
-export const lavenderChartConfig = {
-  ...chartConfig,
-  color: (opacity = 1) => `rgba(192, 132, 252, ${opacity})`,
-  propsForDots: { ...chartConfig.propsForDots, stroke: HealthPalette.lavender },
-};
-
-export const yellowChartConfig = {
-  ...chartConfig,
-  color: (opacity = 1) => `rgba(251, 191, 36, ${opacity})`,
-  propsForDots: { ...chartConfig.propsForDots, stroke: HealthPalette.yellow },
-};
+// Helper function to convert hex to rgba
+function hexToRgba(hex: string, opacity: number) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+}

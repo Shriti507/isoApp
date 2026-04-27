@@ -1,100 +1,148 @@
 import React from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { LineChart } from "react-native-chart-kit";
-import { lavenderChartConfig } from "../../constants/chartConfig";
-import { HealthPalette } from "../../constants/theme";
+import Animated, { FadeInUp } from "react-native-reanimated";
 
 const screenWidth = Dimensions.get("window").width;
 
+const stabilityData = {
+  labels: ["Jan", "Feb", "Mar", "Apr"],
+  datasets: [
+    {
+      data: [24, 26, 30, 32],
+      color: () => `rgba(124, 131, 253, 1)`,
+      strokeWidth: 3,
+    },
+  ],
+};
+
 const StabilityCard = () => {
   return (
-    <View style={styles.container}>
+    <Animated.View
+      entering={FadeInUp.duration(600).delay(100)}
+      style={styles.container}
+    >
+      {/* HEADER */}
       <View style={styles.header}>
-        <View>
+        <View style={{ flex: 1 }}>
           <Text style={styles.title}>Stability Summary</Text>
+          <Text style={styles.subtitle}>
+            Based on your recent logs and symptom patterns.
+          </Text>
           <Text style={styles.value}>78%</Text>
         </View>
+
         <View style={styles.tooltip}>
           <Text style={styles.tooltipText}>Stability Improving</Text>
         </View>
       </View>
 
-      <LineChart
-        data={{
-          labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-          datasets: [
-            {
-              data: [65, 70, 68, 72, 75, 74, 78],
-              color: (opacity = 1) => `rgba(192, 132, 252, ${opacity})`, // lavender
-              strokeWidth: 3,
+      {/* CHART WRAPPER (IMPORTANT FIX) */}
+      <View style={styles.chartWrapper}>
+        <LineChart
+          data={stabilityData}
+          width={screenWidth} // 👈 FULL WIDTH
+          height={180}
+          bezier
+          withShadow
+          chartConfig={{
+            backgroundGradientFrom: "#ffffff",
+            backgroundGradientTo: "#ffffff",
+            decimalPlaces: 0,
+
+            color: () => `rgba(124, 131, 253, 1)`,
+
+            fillShadowGradientFrom: "#C4B5FD",
+            fillShadowGradientTo: "#A78BFA",
+            fillShadowGradientOpacity: 0.35,
+
+            propsForDots: {
+              r: "5",
+              strokeWidth: "2",
+              stroke: "#4ade80",
             },
-          ],
-        }}
-        width={screenWidth - 64} 
-        height={180}
-        chartConfig={{
-          ...lavenderChartConfig,
-          fillShadowGradient: HealthPalette.lavender,
-          fillShadowGradientOpacity: 0.2,
-        }}
-        bezier
-        style={styles.chart}
-        withDots={true}
-        withInnerLines={false}
-        withOuterLines={false}
-        withVerticalLines={false}
-        withHorizontalLines={true}
-        fromZero={true}
-      />
-    </View>
+
+            propsForBackgroundLines: {
+              stroke: "#eee",
+            },
+
+            // 🔥 REMOVE INTERNAL PADDING
+            propsForLabels: {
+              dx: 0,
+            },
+          }}
+          style={styles.chart}
+          withInnerLines={false}
+          withOuterLines={false}
+          withVerticalLines={false}
+          withHorizontalLines={true}
+        />
+      </View>
+    </Animated.View>
   );
 };
 
+export default StabilityCard;
+
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
-    borderRadius: 16,
+    backgroundColor: "#fff",
+    borderRadius: 20,
     padding: 16,
+    marginHorizontal: 16,
     marginBottom: 16,
+
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 10,
-    elevation: 3,
+    elevation: 4,
   },
+
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginBottom: 20,
+    marginBottom: 12,
   },
+
   title: {
     fontSize: 14,
     color: "#6b7280",
     fontWeight: "500",
-    marginBottom: 4,
   },
+
+  subtitle: {
+    fontSize: 12,
+    color: "#9ca3af",
+    marginTop: 2,
+    marginBottom: 6,
+  },
+
   value: {
     fontSize: 28,
     fontWeight: "bold",
-    color: "#1f2937",
+    color: "#111827",
   },
+
   tooltip: {
-    backgroundColor: "#f3e8ff",
+    backgroundColor: "#000",
     paddingVertical: 6,
     paddingHorizontal: 12,
-    borderRadius: 20,
+    borderRadius: 12,
   },
+
   tooltipText: {
+    color: "#fff",
     fontSize: 12,
-    color: "#9333ea",
     fontWeight: "600",
   },
+
+  // 🔥 THIS IS THE REAL FIX
+  chartWrapper: {
+    marginLeft: -16,
+    marginRight: -16,
+  },
+
   chart: {
-    marginVertical: 8,
     borderRadius: 16,
-    paddingRight: 0,
   },
 });
-
-export default StabilityCard;

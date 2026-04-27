@@ -1,16 +1,32 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 import { LineChart } from "react-native-chart-kit";
-import { coralChartConfig } from "../../constants/chartConfig";
-import { HealthPalette } from "../../constants/theme";
+import Animated, { FadeInUp } from "react-native-reanimated";
+import { Colors, Shadows } from "../../constants/colors";
+import { baseChartConfig } from "../../constants/chartConfig";
 
 const screenWidth = Dimensions.get("window").width;
 
 const WeightChart = () => {
   const [activeTab, setActiveTab] = useState("Weekly");
 
+  const weeklyData = {
+    labels: ["W1", "W2", "W3", "W4", "W5"],
+    datasets: [{ data: [65.8, 65.2, 65.5, 64.8, 64.5] }],
+  };
+
+  const monthlyData = {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+    datasets: [{ data: [67.0, 66.5, 65.8, 65.2, 64.5] }],
+  };
+
+  const data = activeTab === "Weekly" ? weeklyData : monthlyData;
+
   return (
-    <View style={styles.container}>
+    <Animated.View 
+      entering={FadeInUp.duration(600).delay(300)}
+      style={[styles.container, Shadows.soft]}
+    >
       <View style={styles.header}>
         <View>
           <Text style={styles.title}>Body & Metabolic Trends</Text>
@@ -48,22 +64,18 @@ const WeightChart = () => {
       </View>
 
       <LineChart
-        data={{
-          labels: ["W1", "W2", "W3", "W4", "W5"],
-          datasets: [
-            {
-              data: [65.8, 65.2, 65.5, 64.8, 64.5],
-              color: (opacity = 1) => `rgba(255, 138, 113, ${opacity})`, // coral
-              strokeWidth: 3,
-            },
-          ],
-        }}
+        data={data}
         width={screenWidth - 64}
         height={180}
         chartConfig={{
-          ...coralChartConfig,
-          fillShadowGradient: HealthPalette.coral,
+          ...baseChartConfig,
+          color: (opacity = 1) => `rgba(252, 165, 165, ${opacity})`, // Coral
+          fillShadowGradient: Colors.coral,
           fillShadowGradientOpacity: 0.1,
+          propsForDots: {
+            ...baseChartConfig.propsForDots,
+            stroke: Colors.coral,
+          },
         }}
         bezier
         style={styles.chart}
@@ -72,21 +84,16 @@ const WeightChart = () => {
         withVerticalLines={false}
         fromZero={false}
       />
-    </View>
+    </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
     borderRadius: 16,
     padding: 16,
     marginBottom: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 3,
   },
   header: {
     flexDirection: "row",
@@ -97,15 +104,15 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#1f2937",
+    color: Colors.textPrimary,
   },
   subtitle: {
     fontSize: 14,
-    color: "#6b7280",
+    color: Colors.textSecondary,
   },
   toggleContainer: {
     flexDirection: "row",
-    backgroundColor: "#f3f4f6",
+    backgroundColor: Colors.graySoft,
     borderRadius: 8,
     padding: 2,
   },
@@ -115,20 +122,17 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   toggleButtonActive: {
-    backgroundColor: "white",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
+    backgroundColor: Colors.white,
+    ...Shadows.soft,
     elevation: 1,
   },
   toggleText: {
     fontSize: 12,
-    color: "#6b7280",
+    color: Colors.textSecondary,
     fontWeight: "500",
   },
   toggleTextActive: {
-    color: "#1f2937",
+    color: Colors.textPrimary,
   },
   weightValueContainer: {
     flexDirection: "row",
@@ -136,13 +140,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   weightValue: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: "bold",
-    color: "#1f2937",
+    color: Colors.textPrimary,
   },
   weightUnit: {
     fontSize: 14,
-    color: "#6b7280",
+    color: Colors.textSecondary,
     marginLeft: 4,
   },
   trendIndicator: {
@@ -154,13 +158,14 @@ const styles = StyleSheet.create({
   },
   trendText: {
     fontSize: 12,
-    color: "#10b981",
+    color: Colors.success,
     fontWeight: "600",
   },
   chart: {
     marginVertical: 8,
     borderRadius: 16,
     paddingRight: 0,
+    marginLeft: -16,
   },
 });
 

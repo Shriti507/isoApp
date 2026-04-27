@@ -1,8 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { BarChart } from "react-native-chart-kit";
-import { mintChartConfig } from "../../constants/chartConfig";
-import { HealthPalette } from "../../constants/theme";
+import Animated, { FadeInUp } from "react-native-reanimated";
+import { Colors, Shadows } from "../../constants/colors";
+import { baseChartConfig } from "../../constants/chartConfig";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -17,20 +18,25 @@ const CycleTrendsChart = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <Animated.View 
+      entering={FadeInUp.duration(600).delay(200)}
+      style={[styles.container, Shadows.soft]}
+    >
       <Text style={styles.title}>Cycle Trends</Text>
-      <Text style={styles.subtitle}>Cycle length consistency</Text>
+      <Text style={styles.subtitle}>Cycle length consistency (days)</Text>
 
       <BarChart
         data={data}
         width={screenWidth - 64}
         height={220}
         yAxisLabel=""
-        yAxisSuffix="d"
+        yAxisSuffix=""
         chartConfig={{
-          ...mintChartConfig,
-          fillShadowGradient: HealthPalette.mint,
+          ...baseChartConfig,
+          color: (opacity = 1) => `rgba(110, 231, 183, ${opacity})`, // Mint
+          fillShadowGradient: Colors.mint,
           fillShadowGradientOpacity: 1,
+          barPercentage: 0.7,
         }}
         verticalLabelRotation={0}
         style={styles.chart}
@@ -38,37 +44,33 @@ const CycleTrendsChart = () => {
         fromZero={true}
         flatColor={true}
       />
-    </View>
+    </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
     borderRadius: 16,
     padding: 16,
     marginBottom: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 3,
   },
   title: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#1f2937",
+    color: Colors.textPrimary,
     marginBottom: 4,
   },
   subtitle: {
     fontSize: 14,
-    color: "#6b7280",
+    color: Colors.textSecondary,
     marginBottom: 20,
   },
   chart: {
     marginVertical: 8,
     borderRadius: 16,
     paddingRight: 0,
+    marginLeft: -16, // To align better with labels
   },
 });
 
